@@ -1,6 +1,6 @@
 graph TD
-    User([User]) --> Wrapper[HRAgentWrapper (AdkApp)]
-    Wrapper -->|Delegates via stream_query| Orchestrator[Orchestrator Agent (LlmAgent)]
+    User([User]) --> Wrapper["HRAgentWrapper (AdkApp)"]
+    Wrapper -->|Delegates via stream_query| Orchestrator["Orchestrator Agent (LlmAgent)"]
     
     subgraph "HR Agent System"
         Orchestrator -->|Routes Policy Queries| Policy[Policy Agent]
