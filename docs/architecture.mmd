@@ -1,0 +1,17 @@
+graph TD
+    User([User]) --> Wrapper[HRAgentWrapper (AdkApp)]
+    Wrapper -->|Delegates via stream_query| Orchestrator[Orchestrator Agent (LlmAgent)]
+    
+    subgraph "HR Agent System"
+        Orchestrator -->|Routes Policy Queries| Policy[Policy Agent]
+        Orchestrator -->|Routes Benefits Queries| Benefits[Benefits Agent]
+        Orchestrator -->|Routes Payroll Queries| Payroll[Payroll Agent]
+        Orchestrator -->|Routes Onboarding Queries| Onboarding[Onboarding Agent]
+        
+        Policy -->|Uses| SearchTool[Policy Search Tool]
+        Benefits -->|Uses| BenefitsTool[Benefits Info Tool]
+        Payroll -->|Uses| PayrollTool[Payroll Lookup Tool]
+    end
+    
+    Orchestrator -->|Returns Final Response| Wrapper
+    Wrapper -->|Aggregates Events| User

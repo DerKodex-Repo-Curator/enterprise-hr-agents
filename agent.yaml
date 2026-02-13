@@ -1,0 +1,99 @@
+# HR Multi-Agent System Configuration
+# For use with Vertex AI Agent Designer
+
+name: hr-multi-agent-system
+display_name: HR Multi-Agent System
+description: |
+  Production-grade HR assistant using parallel supervisor pattern.
+  Features: 6 specialist agents, guardrails, escalation handling.
+
+# Agent Engine deployment settings
+agent_engine:
+  project: ${PROJECT_ID}
+  location: us-central1
+
+# Main orchestrator entry point
+root_agent: hr_orchestrator
+
+# Agent definitions (matches agents/ directory)
+agents:
+  - name: hr_orchestrator
+    type: sequential
+    description: Main HR agent that routes and aggregates responses
+    sub_agents:
+      - router_agent
+      - parallel_specialists
+      - aggregator_agent
+
+  - name: router_agent
+    type: llm
+    model: gemini-2.0-flash
+    description: Routes queries to appropriate specialist(s)
+
+  - name: parallel_specialists
+    type: parallel
+    description: Runs specialist agents concurrently
+    sub_agents:
+      - policy_agent
+      - benefits_agent
+      - compliance_agent
+      - onboarding_agent
+      - payroll_agent
+
+  - name: aggregator_agent
+    type: llm
+    model: gemini-2.0-flash
+    description: Synthesizes responses from specialists
+
+  - name: policy_agent
+    type: llm
+    model: gemini-2.0-flash
+    description: HR policy specialist
+    tools:
+      - vertex_ai_search:
+          data_store: hr-policy-store-v3
+
+  - name: benefits_agent
+    type: llm
+    model: gemini-2.0-flash
+    description: Employee benefits specialist
+
+  - name: compliance_agent
+    type: llm
+    model: gemini-2.0-flash
+    description: Legal and regulatory compliance
+
+  - name: onboarding_agent
+    type: llm
+    model: gemini-2.0-flash
+    description: New hire onboarding specialist
+
+  - name: payroll_agent
+    type: llm
+    model: gemini-2.0-flash
+    description: Payroll and compensation
+
+  - name: escalation_agent
+    type: llm
+    model: gemini-2.0-flash
+    description: Sensitive topic escalation
+
+# Guardrails configuration
+guardrails:
+  input:
+    - pii_detection
+    - prompt_injection_detection
+    - escalation_trigger_detection
+  output:
+    - grounding_check
+    - content_filtering
+    - pii_leak_prevention
+
+# Evaluation configuration
+evaluation:
+  golden_dataset: data/golden_dataset.jsonl
+  red_team_script: eval/red_team.py
+  metrics:
+    - groundedness
+    - safety
+    - helpfulness

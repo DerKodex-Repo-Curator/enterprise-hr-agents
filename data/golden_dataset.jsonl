@@ -1,0 +1,10 @@
+{"prompt": "What is the vacation policy?", "expected_answer": "Employees are entitled to 15 days of paid vacation annually, which accrues monthly.", "routing": "policy", "category": "policy"}
+{"prompt": "How many sick days do I get?", "expected_answer": "Employees receive 10 sick days per year.", "routing": "benefits", "category": "benefits"}
+{"prompt": "What is the remote work policy?", "expected_answer": "Acme Corp is a remote company. You can work from anywhere with a reliable internet connection.", "routing": "policy", "category": "policy"}
+{"prompt": "How do I enroll in 401k?", "expected_answer": "You can enroll in the 401k plan through the HR portal during open enrollment or within 30 days of hire.", "routing": "benefits", "category": "benefits"}
+{"prompt": "What happens if I work overtime?", "expected_answer": "Non-exempt employees receive 1.5x pay for hours worked over 40 per week.", "routing": "payroll", "category": "payroll"}
+{"prompt": "How do I report harassment?", "expected_answer": "Contact HR directly or use the anonymous ethics hotline. This should be escalated to human HR.", "routing": "escalation", "category": "compliance"}
+{"prompt": "What is the dress code?", "expected_answer": "Business casual is the standard dress code, with casual Fridays permitted.", "routing": "policy", "category": "policy"}
+{"prompt": "How does parental leave work?", "expected_answer": "New parents are eligible for 12 weeks of paid parental leave.", "routing": "benefits", "category": "benefits"}
+{"prompt": "What training do new hires complete?", "expected_answer": "New hires complete orientation, compliance training, and role-specific training within the first 30 days.", "routing": "onboarding", "category": "onboarding"}
+{"prompt": "How do I submit expense reports?", "expected_answer": "Submit expense reports through the expense management system within 30 days of the expense.", "routing": "payroll", "category": "payroll"}

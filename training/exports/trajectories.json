@@ -1,0 +1,139 @@
+{
+  "version": "1.0",
+  "exported_at": "2026-02-09T09:50:16.467878",
+  "count": 4,
+  "trajectories": [
+    {
+      "id": "b73e2316fb08",
+      "scenario": "Vacation Policy Query",
+      "turns": [
+        {
+          "role": "user",
+          "content": "How many vacation days do I get?",
+          "timestamp": "2026-02-09T09:50:16.467096",
+          "metadata": null
+        },
+        {
+          "role": "agent",
+          "content": "According to our employee handbook, the policy states...",
+          "timestamp": "2026-02-09T09:50:16.467100",
+          "metadata": null
+        }
+      ],
+      "agent_thoughts": [
+        "Analyzing query about policy..."
+      ],
+      "tool_calls": [
+        {
+          "tool": "vertex_ai_search",
+          "params": {
+            "query": "How many vacation days do I get?"
+          },
+          "result": "Retrieved relevant policies"
+        }
+      ],
+      "rating": null,
+      "feedback": null,
+      "created_at": "2026-02-09T09:50:16.467101"
+    },
+    {
+      "id": "9b278ee1bbc3",
+      "scenario": "Sensitive Salary Question",
+      "turns": [
+        {
+          "role": "user",
+          "content": "What's the CEO's salary?",
+          "timestamp": "2026-02-09T09:50:16.467317",
+          "metadata": null
+        },
+        {
+          "role": "agent",
+          "content": "For compliance requirements, please refer to section...",
+          "timestamp": "2026-02-09T09:50:16.467320",
+          "metadata": null
+        }
+      ],
+      "agent_thoughts": [
+        "Analyzing query about compliance..."
+      ],
+      "tool_calls": [
+        {
+          "tool": "vertex_ai_search",
+          "params": {
+            "query": "What's the CEO's salary?"
+          },
+          "result": "Retrieved relevant policies"
+        }
+      ],
+      "rating": null,
+      "feedback": null,
+      "created_at": "2026-02-09T09:50:16.467321"
+    },
+    {
+      "id": "b8a15759dc42",
+      "scenario": "Benefits Enrollment",
+      "turns": [
+        {
+          "role": "user",
+          "content": "How do I enroll in the 401k?",
+          "timestamp": "2026-02-09T09:50:16.467542",
+          "metadata": null
+        },
+        {
+          "role": "agent",
+          "content": "Our benefits package includes health insurance, 401k matching...",
+          "timestamp": "2026-02-09T09:50:16.467544",
+          "metadata": null
+        }
+      ],
+      "agent_thoughts": [
+        "Analyzing query about benefits..."
+      ],
+      "tool_calls": [
+        {
+          "tool": "vertex_ai_search",
+          "params": {
+            "query": "How do I enroll in the 401k?"
+          },
+          "result": "Retrieved relevant policies"
+        }
+      ],
+      "rating": null,
+      "feedback": null,
+      "created_at": "2026-02-09T09:50:16.467545"
+    },
+    {
+      "id": "d9f626fcdbc4",
+      "scenario": "Harassment Report",
+      "turns": [
+        {
+          "role": "user",
+          "content": "I'm being harassed by my manager, what do I do?",
+          "timestamp": "2026-02-09T09:50:16.467755",
+          "metadata": null
+        },
+        {
+          "role": "agent",
+          "content": "For compliance requirements, please refer to section...",
+          "timestamp": "2026-02-09T09:50:16.467757",
+          "metadata": null
+        }
+      ],
+      "agent_thoughts": [
+        "Analyzing query about compliance..."
+      ],
+      "tool_calls": [
+        {
+          "tool": "vertex_ai_search",
+          "params": {
+            "query": "I'm being harassed by my manager, what do I do?"
+          },
+          "result": "Retrieved relevant policies"
+        }
+      ],
+      "rating": null,
+      "feedback": null,
+      "created_at": "2026-02-09T09:50:16.467758"
+    }
+  ]
+}

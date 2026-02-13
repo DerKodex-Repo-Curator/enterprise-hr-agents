@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hr_agent"
+version = "0.1.0"
+authors = [
+  { name="Nik Bhide", email="admin@example.com" },
+]
+description = "HR Compliance Agent with ADK"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "google-cloud-aiplatform>=1.46.0",
+    "google-cloud-bigquery",
+    "google-cloud-storage",
+    "google-cloud-discoveryengine",
+    "google-adk",
+]
+
+[project.scripts]
+hr-agent = "scripts.run_agent:main"

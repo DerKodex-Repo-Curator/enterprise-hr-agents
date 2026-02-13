@@ -1,0 +1,47 @@
+# Multi-Environment Configuration for HR Agent
+# Enterprise Setup: Physical Isolation (Separate Projects)
+
+default:
+  location: us-central1
+  # Default staging bucket pattern (will be overridden per env)
+  staging_bucket: "gs://{project_id}-hr-agent-staging"
+
+environments:
+  dev:
+    project_id: "hr-policy-agent-486811"
+    display_name: hr-agent-v1
+    description: "Development - Developers have full access"
+    memory_bank: false
+    training: false
+    staging_bucket: "gs://hr-policy-agent-486811-hr-agent-staging"
+
+  int:
+    project_id: "hr-agent-dev-8751" # Often runs in Dev project
+    display_name: hr-agent-int
+    description: "Integration - CI/CD automated tests"
+    memory_bank: false
+    training: false
+    staging_bucket: "gs://hr-agent-dev-8751-staging"
+
+  staging:
+    project_id: "hr-agent-staging-8751"
+    display_name: hr-agent-v1
+    description: "Staging - Pre-prod environment for training"
+    memory_bank: true
+    training: true
+    memory_bank_config:
+      embedding_model: text-embedding-005
+      generation_model: gemini-2.0-flash
+    resource_name: "projects/725040224810/locations/us-central1/reasoningEngines/5733666166316990464"
+    staging_bucket: "gs://hr-agent-staging-8751-staging"
+
+  prod:
+    project_id: "hr-agent-prod-8751"
+    display_name: hr-agent-v1
+    description: "Production - Locked down, live traffic"
+    memory_bank: true
+    training: false
+    memory_bank_config:
+      embedding_model: text-embedding-005
+      generation_model: gemini-2.0-flash
+    staging_bucket: "gs://hr-agent-prod-8751-staging"
