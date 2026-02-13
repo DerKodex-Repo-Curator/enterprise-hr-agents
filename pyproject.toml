@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "hr_agent"
 version = "0.1.0"
 authors = [
-  { name="Nik Bhide", email="admin@example.com" },
+  { name="Acme Corp Admin", email="admin@example.com" },
 ]
 description = "HR Compliance Agent with ADK"
 readme = "README.md"
