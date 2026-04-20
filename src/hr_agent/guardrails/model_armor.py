@@ -18,6 +18,8 @@ except ImportError:
     MODEL_ARMOR_AVAILABLE = False
     print("Warning: google-cloud-modelarmor not installed. Using fallback guardrails.")
 
+from google.api_core import exceptions as api_exceptions
+
 
 PROJECT_ID = os.getenv("PROJECT_ID", "hr-policy-agent-486811")
 LOCATION = os.getenv("LOCATION", "us-central1")
@@ -80,9 +82,13 @@ def sanitize_user_prompt(
         }
         
         return is_safe, sanitized, detection_results
-        
+
+    except (api_exceptions.PermissionDenied, api_exceptions.Unauthenticated) as e:
+        # Fail closed on auth errors — don't silently pass unsafe prompts through
+        raise RuntimeError(f"Model Armor auth failure, cannot validate prompt: {e}") from e
     except Exception as e:
-        # Fail open with warning (or fail closed in production)
+        # Fail open for transient errors (network blips, quota, etc.) with a warning
+        print(f"Warning: Model Armor prompt check failed with transient error: {e}")
         return True, prompt, {"model_armor": True, "error": str(e)}
 
 
@@ -127,8 +133,11 @@ def sanitize_model_response(
         }
         
         return is_safe, sanitized, detection_results
-        
+
+    except (api_exceptions.PermissionDenied, api_exceptions.Unauthenticated) as e:
+        raise RuntimeError(f"Model Armor auth failure, cannot validate response: {e}") from e
     except Exception as e:
+        print(f"Warning: Model Armor response check failed with transient error: {e}")
         return True, response, {"model_armor": True, "error": str(e)}
 
 

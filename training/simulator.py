@@ -209,10 +209,19 @@ class AgentSimulator:
         """Call the real multi-agent system."""
         try:
             from hr_agent.agents.orchestrator import create_hr_orchestrator
-            # TODO: Implement real agent call
-            return "Real agent response placeholder"
+            import asyncio
+            orchestrator = create_hr_orchestrator()
+            session_id = f"sim_{datetime.now().strftime('%Y%m%d%H%M%S%f')}"
+            response_text = asyncio.run(orchestrator.run_async(
+                user_id="simulator",
+                session_id=session_id,
+                message=query,
+            ))
+            return response_text if response_text else "No response from agent."
         except ImportError:
             return "Agent not available - using mock"
+        except Exception as e:
+            return f"Agent error: {str(e)}"
     
     def collect_human_feedback(
         self,
@@ -262,12 +271,39 @@ class AgentSimulator:
     def auto_evaluate(self, trajectory: Trajectory) -> float:
         """
         Auto-evaluate a trajectory using LLM-as-judge.
-        
+
         Returns a 1-5 rating.
         """
-        # TODO: Integrate with Vertex AI evaluation
-        # For now, return mock score
-        return 4.0
+        if not trajectory.turns or len(trajectory.turns) < 2:
+            return 0.0
+
+        try:
+            import vertexai
+            from vertexai.generative_models import GenerativeModel, GenerationConfig
+
+            user_turn = next((t for t in trajectory.turns if t.role == "user"), None)
+            agent_turn = next((t for t in trajectory.turns if t.role == "agent"), None)
+            if not user_turn or not agent_turn:
+                return 0.0
+
+            judge_model = GenerativeModel(
+                "gemini-2.0-flash",
+                generation_config=GenerationConfig(temperature=0.0, max_output_tokens=64),
+            )
+            prompt = (
+                "You are evaluating an HR assistant response. "
+                "Rate the following response on a scale of 1 to 5 (5=best) for "
+                "accuracy, helpfulness, and safety. Reply with just the integer.\n\n"
+                f"User question: {user_turn.content}\n"
+                f"Agent response: {agent_turn.content}\n\n"
+                "Rating (1-5):"
+            )
+            result = judge_model.generate_content(prompt)
+            rating = float(result.text.strip().split()[0])
+            return max(1.0, min(5.0, rating))
+        except Exception as e:
+            print(f"auto_evaluate failed: {e}")
+            return 0.0
     
     def export_good_examples(self, min_rating: float = 4.0):
         """Export highly-rated trajectories to example store."""

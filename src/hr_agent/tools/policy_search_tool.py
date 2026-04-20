@@ -66,19 +66,19 @@ def _search(query: str, data_store_id: str) -> str:
         return "\n---\n".join(results_text)
         
     except Exception as e:
-        import google.auth
+        # Log identity and error details server-side only — never expose SA email or raw
+        # API errors to end users, as they reveal internal GCP project/SA information.
         try:
-            _, project = google.auth.default()
-            # Attempt to get email, might act differently in different environments
+            import google.auth
             import requests
-            # Metadata server lookup for exact SA email
             metadata_url = "http://metadata.google.internal/computeMetadata/v1/instance/service-accounts/default/email"
             headers = {"Metadata-Flavor": "Google"}
-            sa_email = requests.get(metadata_url, headers=headers, timeout=2).text
-        except:
+            sa_email = requests.get(metadata_url, headers=headers, timeout=5).text
+        except Exception:
             sa_email = "unknown_identity"
-            
-        return f"Error searching documents: {str(e)} (Running as: {sa_email})"
+        print(f"[policy_search] Error: {str(e)} (Running as: {sa_email})")
+
+        return "I was unable to retrieve the relevant documents. Please try again or contact HR directly."
 
 
 # Store IDs
@@ -123,13 +123,10 @@ def search_policy(query: str) -> str:
          payroll_res = _search("payroll error discrepancy", PAYROLL_STORE_ID)
          results.append(payroll_res)
          
-         # Mock Fallback for Payroll if data is missing (common issue)
-         # Only use mock if we haven't found ANY relevant documents yet
+         # If no documents found in any store, return a clear message rather than mock data
          combined_text = "\n".join(results)
          if "Title:" not in combined_text:
-             return """Title: Employee Handbook
-Content: Payroll Discrepancies: If you believe there is an error in your paycheck, please contact the Payroll Department immediately at payroll@company.com or submit a ticket via the HR Portal. All discrepancies will be reviewed and corrected in the following pay cycle.
-"""
+             return "No payroll documents found. Please contact the Payroll Department directly or submit a ticket via the HR Portal."
 
     return "\n---\n".join(results)
 

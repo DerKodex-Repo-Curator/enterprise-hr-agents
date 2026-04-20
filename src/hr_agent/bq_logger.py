@@ -1,5 +1,6 @@
 import datetime
 from google.cloud import bigquery
+from google.cloud.exceptions import NotFound
 import os
 
 class BigQueryLogger:
@@ -17,7 +18,7 @@ class BigQueryLogger:
         ]
         try:
             self.client.get_table(self.table_ref)
-        except Exception:
+        except NotFound:
             # Create table if it doesn't exist
             table = bigquery.Table(self.table_ref, schema=schema)
             self.client.create_table(table)

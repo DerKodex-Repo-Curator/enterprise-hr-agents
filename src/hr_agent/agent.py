@@ -2,7 +2,6 @@ import os
 import vertexai
 from vertexai.preview import reasoning_engines
 from vertexai.preview.generative_models import GenerativeModel, Tool, SafetySetting, Part
-from vertexai.preview.generative_models import GenerativeModel, Tool, SafetySetting, Part
 from .bq_logger import BigQueryLogger
 
 # Initialize Vertex AI - Env vars expected
@@ -81,10 +80,11 @@ class HRPolicyAgent:
             text = response.text
             
             # Grounding check (simplified for now, consistent with previous logic)
-            grounding_metadata = response.candidates[0].grounding_metadata
             has_attribution = False
-            if grounding_metadata and grounding_metadata.grounding_chunks:
-                has_attribution = True
+            if response.candidates:
+                grounding_metadata = response.candidates[0].grounding_metadata
+                if grounding_metadata and grounding_metadata.grounding_chunks:
+                    has_attribution = True
                 
             final_response = text
             log_reason = "Success"
