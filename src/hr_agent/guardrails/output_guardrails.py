@@ -102,4 +102,4 @@ def output_guardrail_callback(context, agent_response: str) -> Tuple[bool, str]:
     ADK-compatible callback for output guardrails.
     """
     is_safe, sanitized, metadata = validate_output(agent_response)
-    return is_safe or True, sanitized  # Allow through with modification
+    return is_safe, sanitized

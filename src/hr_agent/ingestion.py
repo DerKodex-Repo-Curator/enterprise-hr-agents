@@ -1,4 +1,5 @@
 import os
+import sys
 from google.cloud import storage
 from google.cloud import discoveryengine_v1 as discoveryengine
 
@@ -45,6 +46,7 @@ if __name__ == "__main__":
 
     if not all([PROJECT_ID, BUCKET_NAME, DATA_STORE_ID]):
         print("Please set PROJECT_ID, GCS_BUCKET_NAME, and DATA_STORE_ID environment variables.")
+        sys.exit(1)
     else:
         # 1. Upload
         upload_to_gcs(BUCKET_NAME, "data")

@@ -99,6 +99,13 @@ def deploy_agent(env: str, config: Dict[str, Any]):
         else:
             print(f"⚠️ Warning: {config_path} not found. Runtime project detection might fail.")
 
+        # Pre-flight check: verify the hr_agent package directory was copied successfully
+        if not os.path.isdir("hr_agent"):
+            raise RuntimeError(
+                "Pre-flight failed: 'hr_agent' directory not found after copy step. "
+                "Aborting deployment to avoid a broken remote package."
+            )
+
         # 3. Deploy
         remote_app = agent_engines.create(
             app,

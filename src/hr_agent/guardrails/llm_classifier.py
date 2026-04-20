@@ -88,24 +88,25 @@ def classify_intent(user_message: str) -> Dict[str, Any]:
         response_text = response.text
         
         # Extract JSON from response
-        # Look for JSON block in response
+        json_str = None
         if "```json" in response_text:
             json_start = response_text.find("```json") + 7
             json_end = response_text.find("```", json_start)
-            json_str = response_text[json_start:json_end].strip()
-        elif "{" in response_text:
+            if json_end != -1:
+                json_str = response_text[json_start:json_end].strip()
+        if json_str is None and "{" in response_text:
             json_start = response_text.find("{")
             json_end = response_text.rfind("}") + 1
-            json_str = response_text[json_start:json_end]
-        else:
-            # Fallback - assume safe if can't parse
+            if json_end > json_start:
+                json_str = response_text[json_start:json_end]
+        if json_str is None:
             return {
                 "is_safe": True,
                 "risk_category": "parse_error",
                 "confidence": "low",
                 "reasoning": "Could not parse classifier response"
             }
-        
+
         result = json.loads(json_str)
         return result
         
